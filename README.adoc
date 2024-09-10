@@ -1,0 +1,134 @@
+= Crazy data-oriented programming
+
+Big UP to https://github.com/bobocode-projects/java-fundamentals-exercises[bobocode-projects] and their marvelous exercises.
+
+This is a missing part.
+
+== Sealed interface
+
+=== Declaring a sealed interface
+
+[source,java]
+----
+public sealed interface Foo permits Fighters, Bar {
+    String foo();
+}
+----
+
+=== Implementing a sealed interface
+
+Can be done with either a `final` class, a sealed
+
+[source,java]
+----
+public final class Bar implements Foo {
+    public String foo() {
+        return "Bar";
+    }
+}
+----
+
+[source,java]
+----
+public sealed interface Bar extends Foo permits Ber, Becue  {
+    String foo();
+}
+----
+
+[source,java]
+----
+public non-sealed interface Bar extends Foo {
+    String bar();
+}
+----
+
+
+
+== Declaring a record
+
+[source,java]
+----
+public record FooFighter(String name, Instrument instrument, String yearsActive){
+
+}
+----
+
+=== Compact constructor
+
+[source,java]
+----
+import java.util.Objects;
+
+public record FooFighter(String name, Instrument instrument, String yearsActive){
+
+    public FooFighter {
+        Objects.requireNonNull(name);
+        Objects.requireNonNull(yearsActive);
+    }
+
+}
+----
+
+=== Beware of mutable properties
+
+== Switch expression (opposed to Switch statement)
+
+[source,java]
+----
+
+
+import java.time.DayOfWeek;DayOfWeek day = ...
+return switch day {
+    case DayOfWeek.MONDAY -> "Tired of Weekend"
+    case DayOfWeek.FRIDAY -> "Tired of Week"
+    default -> {
+        // du code blabla
+        return "En forme";
+    }
+}
+----
+
+== Pattern matching
+
+=== In a if
+
+[source,java]
+----
+if (value instanceof Person person) {
+    return person.getName();
+}
+----
+
+
+=== in a switch
+
+[source,java]
+----
+return switch (value) {
+    case Foo foo -> foo.foo();
+    case Fighter fighter -> fighter.fighter();
+}
+----
+
+==== Using deconstruction
+
+[source,java]
+----
+return switch (value) {
+    case Foo foo -> foo.foo();
+    case Fighter(String name, Instrument instrument, _) -> "%s plays %s".formatted(name, instrument.toString());
+}
+----
+
+==== With a "when"
+
+[source,java]
+----
+return switch (value) {
+    case Foo foo -> foo.foo();
+    case Fighter fighter when fighter.name().startsWith("Dave") -> "Grohl !!!!!";
+}
+----
+
+
+
